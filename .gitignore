@@ -1,3 +1,7 @@
+# test fixtures
+test/fixtures/*
+!test/fixtures/.keep
+
 # Compiled class file
 *.class
 
