@@ -25,21 +25,21 @@ def test_create_an_output_file():
         assert output.read() == "some text"
         output.close()
 
-# def test_format_a_url_as_footnote():
-#     runner = CliRunner()
-#     input_file_path = 'test/fixtures/input_file2.md'
-#     output_file_path = 'test/fixtures/output_file2.md'
+def test_format_a_url_as_footnote():
+    runner = CliRunner()
+    input_file_path = 'test/fixtures/input_file2.md'
+    output_file_path = 'test/fixtures/output_file2.md'
     
-#     with open(input_file_path, WRITE_ONLY) as input_file:
-#         input_file.write("[visible text](url-to-domain.com)")
-#         input_file.close()
+    with open(input_file_path, WRITE_ONLY) as input_file:
+        input_file.write("[visible text](url-to-domain.com)")
+        input_file.close()
 
-#     result = runner.invoke(url_to_footnote, ["-i", input_file_path, "-o", output_file_path])
+    result = runner.invoke(url_to_footnote, ["-i", input_file_path, "-o", output_file_path])
     
-#     assert result.exit_code == SUCCESS_EXIT_CODE
-#     with open(output_file_path, READ_ONLY) as output:
-#         assert output.read() == """visible text [^placeholder]
+    assert result.exit_code == SUCCESS_EXIT_CODE
+    with open(output_file_path, READ_ONLY) as output:
+        assert output.read() == """visible text [^placeholder]
 
-# [^placeholder]: url-to-domain.com"""
-#         output.close()
+[^placeholder]: url-to-domain.com"""
+        output.close()
     

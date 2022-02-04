@@ -1,11 +1,7 @@
-import re
 import click
 
 from src.filesystem import READ_ONLY, WRITE_ONLY
-
-INLINE_URL_PATTERN = re.compile(r'\[[^\[\]]+\]\([^\(\)]+\)')
-VISIBLE_TEXT_URL_PATTERN = re.compile(r'\([^\(\)]+\)')
-URL_PATTERN = re.compile(r'\[[^\[\]]+\]')
+from src.url_finder import URLFinder
 
 @click.group()
 def markdown_formatter():
@@ -23,17 +19,17 @@ def url_to_footnote(input_file_path: str, output_file_path: str):
     """
     with open(input_file_path, READ_ONLY) as input_file:
         with open(output_file_path, WRITE_ONLY) as output_file:
+            finder = URLFinder()
             text = input_file.read()
 
-            inline_url = INLINE_URL_PATTERN.match(text)
+            inline_url = finder.find_all_inline_urls(text)
             if inline_url:
-                visible_text = VISIBLE_TEXT_URL_PATTERN.match(inline_url)
-                url = URL_PATTERN.match(inline_url)
-                text = f"[{visible_text}] [^placeholder]"
+                anchor_text, url = finder.split_inline_url(inline_url[0])
+                text = f"{anchor_text} [^placeholder]"
 
             output_file.write(text)
             if inline_url:
-                output_file.write("\n")
+                output_file.write("\n\n")
                 output_file.write(f"[^placeholder]: {url}")
             output_file.close()
         input_file.close()
