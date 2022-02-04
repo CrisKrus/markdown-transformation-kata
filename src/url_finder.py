@@ -2,9 +2,6 @@ import re
 
 class URLFinder():
     INLINE_URL_PATTERN = re.compile(r'\[[^\[\]]+\]\([^\(\)]+\)')
-    ANCHOR_TEXT_PATTERN = re.compile(r'\[[^\[\]]+\]')
-    URL_PATTERN = re.compile(r'\([^\(\)]+\)')
-
         
     def find_all_inline_urls(self, text: str) -> str:
         """
