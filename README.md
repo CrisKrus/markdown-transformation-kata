@@ -33,3 +33,29 @@ and some other text line.
 
 [^book1]: https://codigosostenible.com
 ```
+
+https://youtu.be/yaRsAoPSvx0
+
+## Como usar este repo
+
+### Instalar dependencias
+
+```cmd
+pipenv shell
+pipenv install
+```
+
+### Lanzar los tests
+
+```cmd
+pipenv shell
+pipenv install
+
+pytest
+```
+
+### Ejecuto el CLI
+
+```cmd
+python ./src/main.py url-to-footnote -i test/fixtures/input_file.md -o test/fixtures/foo.md
+```
