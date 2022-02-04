@@ -34,7 +34,7 @@ and some other text line.
 [^book1]: https://codigosostenible.com
 ```
 
-https://youtu.be/yaRsAoPSvx0
+<https://youtu.be/yaRsAoPSvx0>
 
 ## How to use this repo
 
