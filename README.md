@@ -36,16 +36,16 @@ and some other text line.
 
 https://youtu.be/yaRsAoPSvx0
 
-## Como usar este repo
+## How to use this repo
 
-### Instalar dependencias
+### Install dependencies
 
 ```cmd
 pipenv shell
 pipenv install
 ```
 
-### Lanzar los tests
+### Run the tests
 
 ```cmd
 pipenv shell
@@ -54,7 +54,7 @@ pipenv install
 pytest
 ```
 
-### Ejecuto el CLI
+### Launch the CLI
 
 ```cmd
 python ./src/main.py url-to-footnote -i test/fixtures/input_file.md -o test/fixtures/foo.md
