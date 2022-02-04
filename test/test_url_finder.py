@@ -29,3 +29,9 @@ def test_split_anchor_and_url():
 
     assert anchor == "anchor"
     assert url == "url.com"
+
+def test_split_complex_urls():
+    anchor, url = split_inline_url("[some text](subdomain.my-url_to.com/somethig?query=foo.bar)")
+
+    assert anchor == "some text"
+    assert url == "subdomain.my-url_to.com/somethig?query=foo.bar"
