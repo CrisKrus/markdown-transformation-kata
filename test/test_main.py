@@ -69,3 +69,23 @@ more text here
 """
         output.close()
     
+def test_format_multiple_urls_in_one_line_as_footnote():
+    runner = CliRunner()
+    input_file_path = 'test/fixtures/input_file2.md'
+    output_file_path = 'test/fixtures/output_file2.md'
+    
+    with open(input_file_path, WRITE_ONLY) as input_file:
+        input_file.write("previous text [visible text](url-to-domain.com) more text [other link](foo.bar)")
+        input_file.close()
+
+    result = runner.invoke(url_to_footnote, ["-i", input_file_path, "-o", output_file_path])
+    
+    assert result.exit_code == SUCCESS_EXIT_CODE
+    with open(output_file_path, READ_ONLY) as output:
+        assert output.read() == """previous text visible text [^1] more text other link [^2]
+
+[^1]: url-to-domain.com
+[^2]: foo.bar
+"""
+        output.close()
+    
