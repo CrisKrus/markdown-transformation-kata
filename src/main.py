@@ -20,17 +20,23 @@ def url_to_footnote(input_file_path: str, output_file_path: str):
     with open(input_file_path, READ_ONLY) as input_file:
         with open(output_file_path, WRITE_ONLY) as output_file:
             finder = URLFinder()
-            text = input_file.read()
+            urls = []
+            for line in input_file:
+                inline_url = finder.find_all_inline_urls(line)
+                if inline_url:
+                    anchor_text, url = finder.split_inline_url(inline_url[0])
+                    urls.append(url)
+                    url_index = len(urls)
+                    url_placeholder = f"{anchor_text} [^{url_index}]"
+                    line = line.replace(inline_url[0], url_placeholder)
 
-            inline_url = finder.find_all_inline_urls(text)
-            if inline_url:
-                anchor_text, url = finder.split_inline_url(inline_url[0])
-                text = f"{anchor_text} [^placeholder]"
+                output_file.write(line)
 
-            output_file.write(text)
-            if inline_url:
+            if len(urls) > 0:
                 output_file.write("\n\n")
-                output_file.write(f"[^placeholder]: {url}")
+                for u in urls:
+                    i = urls.index(u) + 1 # to avoid start in 0
+                    output_file.write(f"[^{i}]: {u}\n")
             output_file.close()
         input_file.close()
 
