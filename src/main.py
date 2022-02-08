@@ -1,6 +1,6 @@
 import click
 
-from src.filesystem import READ_ONLY, WRITE_ONLY
+from src.file_manager import READ_ONLY, WRITE_ONLY
 from src.url_finder import URLFinder
 
 @click.group()

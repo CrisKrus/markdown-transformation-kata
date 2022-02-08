@@ -2,7 +2,7 @@ from src.url_finder import URLFinder
 
 
 def test_finds_an_url():
-    result = URLFinder().find_all_inline_urls("[anchor](url.com)")
+    result = URLFinder().find_all_inline_urls("hello world [anchor](url.com) some irrelevant text")
 
     assert result[0] == "[anchor](url.com)"
 

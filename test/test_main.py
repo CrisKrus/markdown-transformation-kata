@@ -1,13 +1,14 @@
 from click.testing import CliRunner
-from src.filesystem import READ_ONLY, WRITE_ONLY
+from src.file_manager import READ_ONLY, WRITE_ONLY
 from src.main import url_to_footnote
 
 SUCCESS_EXIT_CODE = 0
 
 # TODO crear un setup que borre todos los fixtures antes de cada test
-# TODO crear un modulo para lectura/escritura de ficheros en el sistema
 # TODO tener en cuenta la asincronia de los tests 
 # TODO tener en cuenta que pasa si crearmos un fichero y el siguiente test intenta crear uno nuevo pero ya existe
+
+# TODO crear un modulo para lectura/escritura de ficheros en el sistema
 
 def test_create_an_output_file():
     runner = CliRunner()
