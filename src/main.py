@@ -25,8 +25,9 @@ def url_to_footnote(input_file_path: str, output_file_path: str):
                 inline_urls = finder.find_all_inline_urls(line)
                 for inline_url in inline_urls:
                     anchor_text, url = finder.split_inline_url(inline_url)
-                    urls.append(url)
-                    url_index = len(urls)
+                    if url not in urls:
+                        urls.append(url)
+                    url_index = urls.index(url) + 1
                     url_placeholder = f"{anchor_text} [^{url_index}]"
                     line = line.replace(inline_url, url_placeholder)
 

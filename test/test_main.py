@@ -28,8 +28,8 @@ def test_create_an_output_file():
 
 def test_format_a_url_as_footnote():
     runner = CliRunner()
-    input_file_path = 'test/fixtures/input_file2.md'
-    output_file_path = 'test/fixtures/output_file2.md'
+    input_file_path = 'test/fixtures/input_file.md'
+    output_file_path = 'test/fixtures/output_file.md'
     
     with open(input_file_path, WRITE_ONLY) as input_file:
         input_file.write("previous text [visible text](url-to-domain.com)")
@@ -71,8 +71,8 @@ more text here
     
 def test_format_multiple_urls_in_one_line_as_footnote():
     runner = CliRunner()
-    input_file_path = 'test/fixtures/input_file2.md'
-    output_file_path = 'test/fixtures/output_file2.md'
+    input_file_path = 'test/fixtures/input_file.md'
+    output_file_path = 'test/fixtures/output_file.md'
     
     with open(input_file_path, WRITE_ONLY) as input_file:
         input_file.write("previous text [visible text](url-to-domain.com) more text [other link](foo.bar)")
@@ -89,3 +89,21 @@ def test_format_multiple_urls_in_one_line_as_footnote():
 """
         output.close()
     
+def test_format_same_url_multiple_times():
+    runner = CliRunner()
+    input_file_path = 'test/fixtures/input_file.md'
+    output_file_path = 'test/fixtures/output_file.md'
+    
+    with open(input_file_path, WRITE_ONLY) as input_file:
+        input_file.write("previous text [visible text](some-url.com) more text [same link](some-url.com)")
+        input_file.close()
+
+    result = runner.invoke(url_to_footnote, ["-i", input_file_path, "-o", output_file_path])
+    
+    assert result.exit_code == SUCCESS_EXIT_CODE
+    with open(output_file_path, READ_ONLY) as output:
+        assert output.read() == """previous text visible text [^1] more text same link [^1]
+
+[^1]: some-url.com
+"""
+        output.close()
