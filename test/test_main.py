@@ -1,11 +1,10 @@
 from click.testing import CliRunner
-from conftest import clean_up_fixtures
+from conftest import content_equals, clean_up_fixtures
 from src.file_manager import READ_ONLY, WRITE_ONLY
 from src.main import url_to_footnote
 
 SUCCESS_EXIT_CODE = 0
 
-# TODO crear un setup que borre todos los fixtures antes de cada test
 # TODO tener en cuenta la asincronia de los tests 
 
 # TODO crear un modulo para lectura/escritura de ficheros en el sistema para desacoplar la lectura que siempre es local
@@ -22,9 +21,8 @@ def test_create_an_output_file():
     result = runner.invoke(url_to_footnote, ["-i", input_file_path, "-o", output_file_path])
 
     assert result.exit_code == SUCCESS_EXIT_CODE
-    with open(output_file_path, READ_ONLY) as output:
-        assert output.read() == "some text"
-        output.close()
+    expected_output = "some text"
+    assert content_equals(output_file_path, expected_output)
     clean_up_fixtures([input_file_path, output_file_path])
 
 
@@ -40,12 +38,11 @@ def test_format_a_url_as_footnote():
     result = runner.invoke(url_to_footnote, ["-i", input_file_path, "-o", output_file_path])
     
     assert result.exit_code == SUCCESS_EXIT_CODE
-    with open(output_file_path, READ_ONLY) as output:
-        assert output.read() == """previous text visible text [^1]
+    expected_output = """previous text visible text [^1]
 
 [^1]: url-to-domain.com
 """
-        output.close()
+    assert content_equals(output_file_path, expected_output)
     clean_up_fixtures([input_file_path, output_file_path])
 
     
@@ -63,15 +60,14 @@ more text here""")
     result = runner.invoke(url_to_footnote, ["-i", input_file_path, "-o", output_file_path])
     
     assert result.exit_code == SUCCESS_EXIT_CODE
-    with open(output_file_path, READ_ONLY) as output:
-        assert output.read() == """visible text [^1]
+    expected_output = """visible text [^1]
 some text here link [^2]
 more text here
 
 [^1]: url-to-domain.com
 [^2]: other-url.com
 """
-        output.close()
+    assert content_equals(output_file_path, expected_output)
     clean_up_fixtures([input_file_path, output_file_path])
 
     
@@ -87,13 +83,12 @@ def test_format_multiple_urls_in_one_line_as_footnote():
     result = runner.invoke(url_to_footnote, ["-i", input_file_path, "-o", output_file_path])
     
     assert result.exit_code == SUCCESS_EXIT_CODE
-    with open(output_file_path, READ_ONLY) as output:
-        assert output.read() == """previous text visible text [^1] more text other link [^2]
+    expected_output = """previous text visible text [^1] more text other link [^2]
 
 [^1]: url-to-domain.com
 [^2]: foo.bar
 """
-        output.close()
+    assert content_equals(output_file_path, expected_output)
     clean_up_fixtures([input_file_path, output_file_path])
 
     
@@ -109,11 +104,10 @@ def test_format_same_url_multiple_times_as_footnote():
     result = runner.invoke(url_to_footnote, ["-i", input_file_path, "-o", output_file_path])
     
     assert result.exit_code == SUCCESS_EXIT_CODE
-    with open(output_file_path, READ_ONLY) as output:
-        assert output.read() == """previous text visible text [^1] more text same link [^1]
+    expected_output = """previous text visible text [^1] more text same link [^1]
 
 [^1]: some-url.com
 """
-        output.close()
+    assert content_equals(output_file_path, expected_output)
     clean_up_fixtures([input_file_path, output_file_path])
     
