@@ -1,6 +1,6 @@
 from click.testing import CliRunner
 from conftest import content_equals, clean_up_fixtures
-from src.file_manager import READ_ONLY, WRITE_ONLY
+from src.file_manager import WRITE_ONLY
 from src.main import url_to_footnote
 
 SUCCESS_EXIT_CODE = 0
