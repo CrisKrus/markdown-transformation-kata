@@ -1,4 +1,5 @@
 from click.testing import CliRunner
+from conftest import clean_up_fixtures
 from src.file_manager import READ_ONLY, WRITE_ONLY
 from src.main import url_to_footnote
 
@@ -6,9 +7,8 @@ SUCCESS_EXIT_CODE = 0
 
 # TODO crear un setup que borre todos los fixtures antes de cada test
 # TODO tener en cuenta la asincronia de los tests 
-# TODO tener en cuenta que pasa si crearmos un fichero y el siguiente test intenta crear uno nuevo pero ya existe
 
-# TODO crear un modulo para lectura/escritura de ficheros en el sistema
+# TODO crear un modulo para lectura/escritura de ficheros en el sistema para desacoplar la lectura que siempre es local
 
 def test_create_an_output_file():
     runner = CliRunner()
@@ -25,6 +25,8 @@ def test_create_an_output_file():
     with open(output_file_path, READ_ONLY) as output:
         assert output.read() == "some text"
         output.close()
+    clean_up_fixtures([input_file_path, output_file_path])
+
 
 def test_format_a_url_as_footnote():
     runner = CliRunner()
@@ -44,6 +46,8 @@ def test_format_a_url_as_footnote():
 [^1]: url-to-domain.com
 """
         output.close()
+    clean_up_fixtures([input_file_path, output_file_path])
+
     
 def test_format_multiple_inlineurl_as_footnote():
     runner = CliRunner()
@@ -68,6 +72,8 @@ more text here
 [^2]: other-url.com
 """
         output.close()
+    clean_up_fixtures([input_file_path, output_file_path])
+
     
 def test_format_multiple_urls_in_one_line_as_footnote():
     runner = CliRunner()
@@ -88,6 +94,8 @@ def test_format_multiple_urls_in_one_line_as_footnote():
 [^2]: foo.bar
 """
         output.close()
+    clean_up_fixtures([input_file_path, output_file_path])
+
     
 def test_format_same_url_multiple_times_as_footnote():
     runner = CliRunner()
@@ -107,3 +115,5 @@ def test_format_same_url_multiple_times_as_footnote():
 [^1]: some-url.com
 """
         output.close()
+    clean_up_fixtures([input_file_path, output_file_path])
+    
