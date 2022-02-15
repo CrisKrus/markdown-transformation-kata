@@ -1,8 +1,8 @@
 import click
 
-from src.file_manager import READ_ONLY, WRITE_ONLY
-from src.url_finder import URLFinder
-from src.url_manager import URLManager
+from file_manager import READ_ONLY, WRITE_ONLY
+from url_finder import URLFinder
+from url_manager import URLManager
 
 @click.group()
 def markdown_formatter():
