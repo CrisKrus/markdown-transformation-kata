@@ -34,7 +34,7 @@ and some other text line.
 [^book1]: https://codigosostenible.com
 ```
 
-<https://youtu.be/yaRsAoPSvx0>
+## [YouTube video explainig the kata (in spanish)](https://youtu.be/yaRsAoPSvx0)
 
 ## How to use this repo
 

@@ -2,6 +2,7 @@ import click
 
 from src.file_manager import READ_ONLY, WRITE_ONLY
 from src.url_finder import URLFinder
+from src.url_manager import URLManager
 
 @click.group()
 def markdown_formatter():
@@ -19,25 +20,26 @@ def url_to_footnote(input_file_path: str, output_file_path: str):
     """
     with open(input_file_path, READ_ONLY) as input_file:
         with open(output_file_path, WRITE_ONLY) as output_file:
-            finder = URLFinder()
-            urls = []
+            url_finder = URLFinder()
+            url_manager = URLManager()
+
             for line in input_file:
-                inline_urls = finder.find_all_inline_urls(line)
+                inline_urls = url_finder.find_all_inline_urls(line)
                 for inline_url in inline_urls:
-                    anchor_text, url = finder.split_inline_url(inline_url)
-                    if url not in urls:
-                        urls.append(url)
-                    url_index = urls.index(url) + 1
+                    anchor_text, url = url_finder.split_inline_url(inline_url)
+                    url_manager.addUrl(url)
+
+                    url_index = url_manager.getAliasFor(url)
                     url_placeholder = f"{anchor_text} [^{url_index}]"
                     line = line.replace(inline_url, url_placeholder)
 
                 output_file.write(line)
 
-            if len(urls) > 0:
+            if url_manager.hasUrls():
                 output_file.write("\n\n")
 
-                for url in urls:
-                    url_index = urls.index(url) + 1 # to avoid start in 0
+                for url in url_manager.allUrls():
+                    url_index = url_manager.getAliasFor(url)
                     output_file.write(f"[^{url_index}]: {url}\n")
             output_file.close()
         input_file.close()

@@ -89,7 +89,7 @@ def test_format_multiple_urls_in_one_line_as_footnote():
 """
         output.close()
     
-def test_format_same_url_multiple_times():
+def test_format_same_url_multiple_times_as_footnote():
     runner = CliRunner()
     input_file_path = 'test/fixtures/input_file.md'
     output_file_path = 'test/fixtures/output_file.md'
