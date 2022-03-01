@@ -1,3 +1,4 @@
+import sys
 import click
 
 from file_manager import READ_ONLY, WRITE_ONLY
@@ -43,6 +44,35 @@ def url_to_footnote(input_file_path: str, output_file_path: str):
                     output_file.write(f"[^{url_index}]: {url}\n")
             output_file.close()
         input_file.close()
+
+@markdown_formatter.command()
+def url_to_footnote_std():
+    """
+    Create a new markdown file replacing the in-line URL
+    to footnote format.
+    """
+    url_finder = URLFinder()
+    url_manager = URLManager()
+
+    for line in sys.stdin:
+        inline_urls = url_finder.find_all_inline_urls(line)
+        for inline_url in inline_urls:
+            anchor_text, url = url_finder.split_inline_url(inline_url)
+            url_manager.addUrl(url)
+
+            url_index = url_manager.getAliasFor(url)
+            url_placeholder = f"{anchor_text} [^{url_index}]"
+            line = line.replace(inline_url, url_placeholder)
+
+        click.echo(line, nl=False)
+
+    if url_manager.hasUrls():
+        click.echo("\n\n", nl=False)
+
+        for url in url_manager.allUrls():
+            url_index = url_manager.getAliasFor(url)
+            click.echo(f"[^{url_index}]: {url}\n", nl=False)
+
 
 if __name__ == '__main__':
     markdown_formatter(prog_name='mdf')

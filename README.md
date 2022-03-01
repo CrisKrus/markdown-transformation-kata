@@ -57,5 +57,5 @@ pytest
 ### Launch the CLI
 
 ```cmd
-python ./src/main.py url-to-footnote -i test/fixtures/input_file.md -o test/fixtures/foo.md
+python src/main.py url-to-footnote -i input_file.md -o output_file.md
 ```
